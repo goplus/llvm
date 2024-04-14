@@ -1,5 +1,13 @@
 # Go bindings to system LLVM
 
+[![Build Status](https://github.com/goplus/llvm/actions/workflows/go.yml/badge.svg)](https://github.com/goplus/llvm/actions/workflows/go.yml)
+[![Go Report Card](https://goreportcard.com/badge/github.com/goplus/llvm)](https://goreportcard.com/report/github.com/goplus/llvm)
+[![GoDoc](https://pkg.go.dev/badge/github.com/goplus/llvm.svg)](https://pkg.go.dev/github.com/goplus/llvm)
+<!--
+[![GitHub release](https://img.shields.io/github/v/tag/goplus/llvm.svg?label=release)](https://github.com/goplus/llvm/releases)
+[![Coverage Status](https://codecov.io/gh/goplus/llvm/branch/main/graph/badge.svg)](https://codecov.io/gh/goplus/llvm)
+-->
+
 This library provides bindings to a system-installed LLVM.
 
 Currently supported:
