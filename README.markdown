@@ -15,7 +15,7 @@ to use LLVM 17.
 
 If you have a supported LLVM installation, you should be able to do a simple `go get`:
 
-    go get tinygo.org/x/go-llvm
+    go get github.com/goplus/llvm
 
 You can use build tags to select a LLVM version. For example, use `-tags=llvm15` to select LLVM 15. Setting a build tag for a LLVM version that is not supported will be ignored.
 
