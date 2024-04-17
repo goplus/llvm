@@ -33,3 +33,24 @@ func (m Module) Finalize() {
 		Module{m}.Dispose()
 	})
 }
+
+func (b Builder) Finalize() {
+	runtime.SetFinalizer(b.C, func(b C.LLVMBuilderRef) {
+		Builder{b}.Dispose()
+	})
+}
+
+func CreateBinOp(b Builder, op Opcode, lhs, rhs Value) (v Value) {
+	v.C = C.LLVMBuildBinOp(b.C, C.LLVMOpcode(op), lhs.C, rhs.C, nil)
+	return
+}
+
+func CreateICmp(b Builder, op IntPredicate, lhs, rhs Value) (v Value) {
+	v.C = C.LLVMBuildICmp(b.C, C.LLVMIntPredicate(op), lhs.C, rhs.C, nil)
+	return
+}
+
+func CreateFCmp(b Builder, op FloatPredicate, lhs, rhs Value) (v Value) {
+	v.C = C.LLVMBuildFCmp(b.C, C.LLVMRealPredicate(op), lhs.C, rhs.C, nil)
+	return
+}
