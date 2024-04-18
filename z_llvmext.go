@@ -54,3 +54,18 @@ func CreateFCmp(b Builder, op FloatPredicate, lhs, rhs Value) (v Value) {
 	v.C = C.LLVMBuildFCmp(b.C, C.LLVMRealPredicate(op), lhs.C, rhs.C, nil)
 	return
 }
+
+func CreateAlloca(b Builder, t Type) (v Value) {
+	v.C = C.LLVMBuildAlloca(b.C, t.C, nil)
+	return
+}
+
+func CreateStructGEP(b Builder, t Type, p Value, i int) (v Value) {
+	v.C = C.LLVMBuildStructGEP2(b.C, t.C, p.C, C.unsigned(i), nil)
+	return
+}
+
+func CreateLoad(b Builder, t Type, p Value) (v Value) {
+	v.C = C.LLVMBuildLoad2(b.C, t.C, p.C, nil)
+	return
+}
