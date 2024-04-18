@@ -75,3 +75,9 @@ func CreateLoad(b Builder, t Type, p Value) (v Value) {
 	v.C = C.LLVMBuildLoad2(b.C, t.C, p.C, &emptyCStr[0])
 	return
 }
+
+func CreateCall(b Builder, t Type, fn Value, args []Value) (v Value) {
+	ptr, nvals := llvmValueRefs(args)
+	v.C = C.LLVMBuildCall2(b.C, t.C, fn.C, ptr, nvals, &emptyCStr[0])
+	return
+}
