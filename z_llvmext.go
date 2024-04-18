@@ -20,7 +20,9 @@ package llvm
 #include "llvm-c/Core.h"
 */
 import "C"
-import "runtime"
+import (
+	"runtime"
+)
 
 func (c Context) Finalize() {
 	runtime.SetFinalizer(c.C, func(c C.LLVMContextRef) {
@@ -40,32 +42,36 @@ func (b Builder) Finalize() {
 	})
 }
 
+var (
+	emptyCStr [1]C.char
+)
+
 func CreateBinOp(b Builder, op Opcode, lhs, rhs Value) (v Value) {
-	v.C = C.LLVMBuildBinOp(b.C, C.LLVMOpcode(op), lhs.C, rhs.C, nil)
+	v.C = C.LLVMBuildBinOp(b.C, C.LLVMOpcode(op), lhs.C, rhs.C, &emptyCStr[0])
 	return
 }
 
 func CreateICmp(b Builder, op IntPredicate, lhs, rhs Value) (v Value) {
-	v.C = C.LLVMBuildICmp(b.C, C.LLVMIntPredicate(op), lhs.C, rhs.C, nil)
+	v.C = C.LLVMBuildICmp(b.C, C.LLVMIntPredicate(op), lhs.C, rhs.C, &emptyCStr[0])
 	return
 }
 
 func CreateFCmp(b Builder, op FloatPredicate, lhs, rhs Value) (v Value) {
-	v.C = C.LLVMBuildFCmp(b.C, C.LLVMRealPredicate(op), lhs.C, rhs.C, nil)
+	v.C = C.LLVMBuildFCmp(b.C, C.LLVMRealPredicate(op), lhs.C, rhs.C, &emptyCStr[0])
 	return
 }
 
 func CreateAlloca(b Builder, t Type) (v Value) {
-	v.C = C.LLVMBuildAlloca(b.C, t.C, nil)
+	v.C = C.LLVMBuildAlloca(b.C, t.C, &emptyCStr[0])
 	return
 }
 
 func CreateStructGEP(b Builder, t Type, p Value, i int) (v Value) {
-	v.C = C.LLVMBuildStructGEP2(b.C, t.C, p.C, C.unsigned(i), nil)
+	v.C = C.LLVMBuildStructGEP2(b.C, t.C, p.C, C.unsigned(i), &emptyCStr[0])
 	return
 }
 
 func CreateLoad(b Builder, t Type, p Value) (v Value) {
-	v.C = C.LLVMBuildLoad2(b.C, t.C, p.C, nil)
+	v.C = C.LLVMBuildLoad2(b.C, t.C, p.C, &emptyCStr[0])
 	return
 }
