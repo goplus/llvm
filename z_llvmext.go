@@ -66,6 +66,18 @@ func CreateAlloca(b Builder, t Type) (v Value) {
 	return
 }
 
+func CreateGEP(b Builder, t Type, p Value, indices []Value) (v Value) {
+	ptr, nvals := llvmValueRefs(indices)
+	v.C = C.LLVMBuildGEP2(b.C, t.C, p.C, ptr, nvals, &emptyCStr[0])
+	return
+}
+
+func CreateInBoundsGEP(b Builder, t Type, p Value, indices []Value) (v Value) {
+	ptr, nvals := llvmValueRefs(indices)
+	v.C = C.LLVMBuildInBoundsGEP2(b.C, t.C, p.C, ptr, nvals, &emptyCStr[0])
+	return
+}
+
 func CreateStructGEP(b Builder, t Type, p Value, i int) (v Value) {
 	v.C = C.LLVMBuildStructGEP2(b.C, t.C, p.C, C.unsigned(i), &emptyCStr[0])
 	return
