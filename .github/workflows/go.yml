@@ -11,6 +11,7 @@ jobs:
     strategy:
       matrix:
         llvm: [14, 15, 16, 17, 18, 19, 20]
+        go-version: [1.18.x, 1.21.x]
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -22,6 +23,10 @@ jobs:
       - name: Update Homebrew
         if: matrix.llvm == 20
         run: brew update
+      - name: Set up Go
+        uses: actions/setup-go@v5
+        with:
+          go-version: ${{ matrix.go-version }}
       - name: Install LLVM
         run: HOMEBREW_NO_AUTO_UPDATE=1 brew install llvm@${{ matrix.llvm }}
       - name: Test LLVM ${{ matrix.llvm }}
@@ -32,11 +37,7 @@ jobs:
         run:
           go test -v
   test-linux:
-<<<<<<< HEAD
     runs-on: ubuntu-22.04
-=======
-    runs-on: ubuntu-latest
->>>>>>> 29a457a (use ubuntu-latest)
     strategy:
       matrix:
         llvm: [14, 15, 16, 17, 18, 19, 20]
