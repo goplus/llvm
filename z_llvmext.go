@@ -61,6 +61,31 @@ func CreateFCmp(b Builder, op FloatPredicate, lhs, rhs Value) (v Value) {
 	return
 }
 
+func CreateIntCast(b Builder, v Value, t Type) (r Value) {
+	r.C = C.LLVMBuildIntCast(b.C, v.C, t.C, &emptyCStr[0])
+	return
+}
+
+func CreateTrunc(b Builder, v Value, t Type) (r Value) {
+	r.C = C.LLVMBuildTrunc(b.C, v.C, t.C, &emptyCStr[0])
+	return
+}
+
+func CreatePtrToInt(b Builder, v Value, t Type) (r Value) {
+	r.C = C.LLVMBuildPtrToInt(b.C, v.C, t.C, &emptyCStr[0])
+	return
+}
+
+func CreateIntToPtr(b Builder, v Value, t Type) (r Value) {
+	r.C = C.LLVMBuildIntToPtr(b.C, v.C, t.C, &emptyCStr[0])
+	return
+}
+
+func CreatePointerCast(b Builder, v Value, t Type) (r Value) {
+	r.C = C.LLVMBuildPointerCast(b.C, v.C, t.C, &emptyCStr[0])
+	return
+}
+
 func CreateAlloca(b Builder, t Type) (v Value) {
 	v.C = C.LLVMBuildAlloca(b.C, t.C, &emptyCStr[0])
 	return
