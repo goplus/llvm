@@ -18,10 +18,12 @@ package llvm
 
 /*
 #include "llvm-c/Core.h"
+#include <stdlib.h>
 */
 import "C"
 import (
 	"runtime"
+	"unsafe"
 )
 
 func (c Context) Finalize() {
@@ -116,5 +118,12 @@ func CreateLoad(b Builder, t Type, p Value) (v Value) {
 func CreateCall(b Builder, t Type, fn Value, args []Value) (v Value) {
 	ptr, nvals := llvmValueRefs(args)
 	v.C = C.LLVMBuildCall2(b.C, t.C, fn.C, ptr, nvals, &emptyCStr[0])
+	return
+}
+
+func CreateGlobalStringPtr(b Builder, str string) (v Value) {
+	cstr := C.CString(str)
+	defer C.free(unsafe.Pointer(cstr))
+	v.C = C.LLVMBuildGlobalStringPtr(b.C, cstr, &emptyCStr[0])
 	return
 }
