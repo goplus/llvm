@@ -93,6 +93,11 @@ func CreateAlloca(b Builder, t Type) (v Value) {
 	return
 }
 
+func CreateArrayAlloca(b Builder, t Type, n Value) (v Value) {
+	v.C = C.LLVMBuildArrayAlloca(b.C, t.C, n.C, &emptyCStr[0])
+	return
+}
+
 func CreateGEP(b Builder, t Type, p Value, indices []Value) (v Value) {
 	ptr, nvals := llvmValueRefs(indices)
 	v.C = C.LLVMBuildGEP2(b.C, t.C, p.C, ptr, nvals, &emptyCStr[0])
