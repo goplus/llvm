@@ -53,6 +53,11 @@ func CreateBinOp(b Builder, op Opcode, lhs, rhs Value) (v Value) {
 	return
 }
 
+func CreatePHI(b Builder, t Type) (v Value) {
+	v.C = C.LLVMBuildPhi(b.C, t.C, &emptyCStr[0])
+	return
+}
+
 func CreateICmp(b Builder, op IntPredicate, lhs, rhs Value) (v Value) {
 	v.C = C.LLVMBuildICmp(b.C, C.LLVMIntPredicate(op), lhs.C, rhs.C, &emptyCStr[0])
 	return
