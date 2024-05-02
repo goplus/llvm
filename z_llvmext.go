@@ -120,6 +120,11 @@ func CreateStructGEP(b Builder, t Type, p Value, i int) (v Value) {
 	return
 }
 
+func CreateExtractValue(b Builder, agg Value, i int) (v Value) {
+	v.C = C.LLVMBuildExtractValue(b.C, agg.C, C.unsigned(i), &emptyCStr[0])
+	return
+}
+
 func CreateLoad(b Builder, t Type, p Value) (v Value) {
 	v.C = C.LLVMBuildLoad2(b.C, t.C, p.C, &emptyCStr[0])
 	return
