@@ -53,8 +53,52 @@ func CreateBinOp(b Builder, op Opcode, lhs, rhs Value) (v Value) {
 	return
 }
 
+func CreateNot(b Builder, v Value) (rv Value) {
+	rv.C = C.LLVMBuildNot(b.C, v.C, &emptyCStr[0])
+	return
+}
+
+func CreateShl(b Builder, lhs, rhs Value) (v Value) {
+	v.C = C.LLVMBuildShl(b.C, lhs.C, rhs.C, &emptyCStr[0])
+	return
+}
+
+func CreateNeg(b Builder, v Value) (rv Value) {
+	rv.C = C.LLVMBuildNeg(b.C, v.C, &emptyCStr[0])
+	return
+}
+
+func CreateFNeg(b Builder, v Value) (rv Value) {
+	rv.C = C.LLVMBuildFNeg(b.C, v.C, &emptyCStr[0])
+	return
+}
+
+func CreateLShr(b Builder, lhs, rhs Value) (v Value) {
+	v.C = C.LLVMBuildLShr(b.C, lhs.C, rhs.C, &emptyCStr[0])
+	return
+}
+
+func CreateAShr(b Builder, lhs, rhs Value) (v Value) {
+	v.C = C.LLVMBuildAShr(b.C, lhs.C, rhs.C, &emptyCStr[0])
+	return
+}
+func CreateAnd(b Builder, lhs, rhs Value) (v Value) {
+	v.C = C.LLVMBuildAnd(b.C, lhs.C, rhs.C, &emptyCStr[0])
+	return
+}
+
+func CreateXor(b Builder, lhs, rhs Value) (v Value) {
+	v.C = C.LLVMBuildXor(b.C, lhs.C, rhs.C, &emptyCStr[0])
+	return
+}
+
 func CreatePHI(b Builder, t Type) (v Value) {
 	v.C = C.LLVMBuildPhi(b.C, t.C, &emptyCStr[0])
+	return
+}
+
+func CreateSelect(b Builder, ifv, thenv, elsev Value) (v Value) {
+	v.C = C.LLVMBuildSelect(b.C, ifv.C, thenv.C, elsev.C, &emptyCStr[0])
 	return
 }
 
@@ -68,6 +112,11 @@ func CreateFCmp(b Builder, op FloatPredicate, lhs, rhs Value) (v Value) {
 	return
 }
 
+func CreateBitCast(b Builder, v Value, t Type) (r Value) {
+	r.C = C.LLVMBuildBitCast(b.C, v.C, t.C, &emptyCStr[0])
+	return
+}
+
 func CreateIntCast(b Builder, v Value, t Type) (r Value) {
 	r.C = C.LLVMBuildIntCast(b.C, v.C, t.C, &emptyCStr[0])
 	return
@@ -75,6 +124,26 @@ func CreateIntCast(b Builder, v Value, t Type) (r Value) {
 
 func CreateTrunc(b Builder, v Value, t Type) (r Value) {
 	r.C = C.LLVMBuildTrunc(b.C, v.C, t.C, &emptyCStr[0])
+	return
+}
+
+func CreateZExt(b Builder, val Value, t Type) (v Value) {
+	v.C = C.LLVMBuildZExt(b.C, val.C, t.C, &emptyCStr[0])
+	return
+}
+
+func CreateSExt(b Builder, val Value, t Type) (v Value) {
+	v.C = C.LLVMBuildSExt(b.C, val.C, t.C, &emptyCStr[0])
+	return
+}
+
+func CreateFPTrunc(b Builder, val Value, t Type) (v Value) {
+	v.C = C.LLVMBuildFPTrunc(b.C, val.C, t.C, &emptyCStr[0])
+	return
+}
+
+func CreateFPExt(b Builder, val Value, t Type) (v Value) {
+	v.C = C.LLVMBuildFPExt(b.C, val.C, t.C, &emptyCStr[0])
 	return
 }
 
@@ -90,6 +159,23 @@ func CreateIntToPtr(b Builder, v Value, t Type) (r Value) {
 
 func CreatePointerCast(b Builder, v Value, t Type) (r Value) {
 	r.C = C.LLVMBuildPointerCast(b.C, v.C, t.C, &emptyCStr[0])
+	return
+}
+
+func CreateFPToUI(b Builder, val Value, t Type) (v Value) {
+	v.C = C.LLVMBuildFPToUI(b.C, val.C, t.C, &emptyCStr[0])
+	return
+}
+func CreateFPToSI(b Builder, val Value, t Type) (v Value) {
+	v.C = C.LLVMBuildFPToSI(b.C, val.C, t.C, &emptyCStr[0])
+	return
+}
+func CreateUIToFP(b Builder, val Value, t Type) (v Value) {
+	v.C = C.LLVMBuildUIToFP(b.C, val.C, t.C, &emptyCStr[0])
+	return
+}
+func CreateSIToFP(b Builder, val Value, t Type) (v Value) {
+	v.C = C.LLVMBuildSIToFP(b.C, val.C, t.C, &emptyCStr[0])
 	return
 }
 
