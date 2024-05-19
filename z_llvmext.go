@@ -58,11 +58,6 @@ func CreateNot(b Builder, v Value) (rv Value) {
 	return
 }
 
-func CreateShl(b Builder, lhs, rhs Value) (v Value) {
-	v.C = C.LLVMBuildShl(b.C, lhs.C, rhs.C, &emptyCStr[0])
-	return
-}
-
 func CreateNeg(b Builder, v Value) (rv Value) {
 	rv.C = C.LLVMBuildNeg(b.C, v.C, &emptyCStr[0])
 	return
@@ -70,6 +65,11 @@ func CreateNeg(b Builder, v Value) (rv Value) {
 
 func CreateFNeg(b Builder, v Value) (rv Value) {
 	rv.C = C.LLVMBuildFNeg(b.C, v.C, &emptyCStr[0])
+	return
+}
+
+func CreateShl(b Builder, lhs, rhs Value) (v Value) {
+	v.C = C.LLVMBuildShl(b.C, lhs.C, rhs.C, &emptyCStr[0])
 	return
 }
 
@@ -82,6 +82,7 @@ func CreateAShr(b Builder, lhs, rhs Value) (v Value) {
 	v.C = C.LLVMBuildAShr(b.C, lhs.C, rhs.C, &emptyCStr[0])
 	return
 }
+
 func CreateAnd(b Builder, lhs, rhs Value) (v Value) {
 	v.C = C.LLVMBuildAnd(b.C, lhs.C, rhs.C, &emptyCStr[0])
 	return
@@ -166,14 +167,17 @@ func CreateFPToUI(b Builder, val Value, t Type) (v Value) {
 	v.C = C.LLVMBuildFPToUI(b.C, val.C, t.C, &emptyCStr[0])
 	return
 }
+
 func CreateFPToSI(b Builder, val Value, t Type) (v Value) {
 	v.C = C.LLVMBuildFPToSI(b.C, val.C, t.C, &emptyCStr[0])
 	return
 }
+
 func CreateUIToFP(b Builder, val Value, t Type) (v Value) {
 	v.C = C.LLVMBuildUIToFP(b.C, val.C, t.C, &emptyCStr[0])
 	return
 }
+
 func CreateSIToFP(b Builder, val Value, t Type) (v Value) {
 	v.C = C.LLVMBuildSIToFP(b.C, val.C, t.C, &emptyCStr[0])
 	return
