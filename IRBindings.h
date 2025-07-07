@@ -55,6 +55,9 @@ LLVMValueRef LLVMGoGetInlineAsm(LLVMTypeRef Ty, char *AsmString,
                                 LLVMBool IsAlignStack,
                                 LLVMInlineAsmDialect Dialect, LLVMBool CanThrow);
 
+LLVMTypeRef LLVMGoGetFunctionType(LLVMValueRef Value);
+LLVMTypeRef LLVMGoGetReturnType(LLVMValueRef Value);
+
 #ifdef __cplusplus
 }
 #endif
