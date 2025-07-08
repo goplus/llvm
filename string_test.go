@@ -21,7 +21,7 @@ func TestStringRecursiveType(t *testing.T) {
 	defer ctx.Dispose()
 	s := ctx.StructCreateNamed("recursive")
 	s.StructSetBody([]Type{s, s}, false)
-	if str := s.String(); str != "%recursive: StructType(%recursive, %recursive)" {
+	if str := s.String(); str != "%recursive = type { %recursive, %recursive }" {
 		t.Errorf("incorrect string result %q", str)
 	}
 }
