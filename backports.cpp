@@ -62,17 +62,3 @@ void LLVMGoDIBuilderInsertDbgValueRecordAtEnd(
   LLVMDIBuilderInsertDbgValueAtEnd(Builder, Val, VarInfo, Expr, DebugLoc, Block);
 #endif
 }
-
-void LLVMGoDIBuilderInsertDbgDeclareRecordAtEnd(
-    LLVMDIBuilderRef Builder, LLVMValueRef Val, LLVMMetadataRef VarInfo,
-    LLVMMetadataRef Expr, LLVMMetadataRef DebugLoc, LLVMBasicBlockRef Block) {
-#if LLVM_VERSION_MAJOR >= 19
-  // Note: this returns a LLVMDbgRecordRef. Previously, InsertDeclareAtEnd would
-  // return a Declare. But since the type changed, and I'd like to keep the API
-  // consistent across LLVM versions, I decided to drop the return value.
-  LLVMDIBuilderInsertDeclareRecordAtEnd(Builder, Val, VarInfo, Expr, DebugLoc, Block);
-#else
-  // Old llvm.dbg.* API.
-  LLVMDIBuilderInsertDeclareAtEnd(Builder, Val, VarInfo, Expr, DebugLoc, Block);
-#endif
-}

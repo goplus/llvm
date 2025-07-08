@@ -1,13 +1,5 @@
 # Go bindings to system LLVM
 
-[![Build Status](https://github.com/goplus/llvm/actions/workflows/go.yml/badge.svg)](https://github.com/goplus/llvm/actions/workflows/go.yml)
-[![Go Report Card](https://goreportcard.com/badge/github.com/goplus/llvm)](https://goreportcard.com/report/github.com/goplus/llvm)
-[![GoDoc](https://pkg.go.dev/badge/github.com/goplus/llvm.svg)](https://pkg.go.dev/github.com/goplus/llvm)
-<!--
-[![GitHub release](https://img.shields.io/github/v/tag/goplus/llvm.svg?label=release)](https://github.com/goplus/llvm/releases)
-[![Coverage Status](https://codecov.io/gh/goplus/llvm/branch/main/graph/badge.svg)](https://codecov.io/gh/goplus/llvm)
--->
-
 This library provides bindings to a system-installed LLVM.
 
 Currently supported:
@@ -24,7 +16,7 @@ to use LLVM 17.
 
 If you have a supported LLVM installation, you should be able to do a simple `go get`:
 
-    go get github.com/goplus/llvm
+    go get tinygo.org/x/go-llvm
 
 You can use build tags to select a LLVM version. For example, use `-tags=llvm15` to select LLVM 15. Setting a build tag for a LLVM version that is not supported will be ignored.
 
