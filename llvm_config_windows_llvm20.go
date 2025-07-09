@@ -1,4 +1,4 @@
-//go:build !byollvm && windows && !llvm14 && !llvm15 && !llvm16 && !llvm17 && !llvm18 && !llvm19
+//go:build !byollvm && windows && llvm20
 
 package llvm
 
