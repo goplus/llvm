@@ -12,7 +12,9 @@
 
 #include "IRBindings.h"
 #include "llvm/ADT/SmallVector.h"
+#include "llvm/Config/llvm-config.h"
 #include "llvm/IR/Attributes.h"
+#include "llvm/IR/Constants.h"
 #include "llvm/IR/DebugLoc.h"
 #include "llvm/IR/DebugInfoMetadata.h"
 #include "llvm/IR/Function.h"
@@ -20,8 +22,41 @@
 #include "llvm/IR/Intrinsics.h"
 #include "llvm/IR/LLVMContext.h"
 #include "llvm/IR/Module.h"
+#include <algorithm>
 
 using namespace llvm;
+
+LLVMValueRef LLVMGoConstFPFromBits(LLVMTypeRef Ty, const uint64_t *Words,
+                                 unsigned NumWords) {
+  if (!Ty || !unwrap(Ty)->isFloatingPointTy())
+    return nullptr;
+  auto *T = unwrap(Ty);
+  unsigned BitWidth = T->getScalarSizeInBits();
+  if (NumWords != (BitWidth + 63) / 64 || !Words)
+    return nullptr;
+  if (BitWidth % 64 && (Words[NumWords - 1] >> (BitWidth % 64)))
+    return nullptr;
+#if LLVM_VERSION_MAJOR >= 22
+  return LLVMConstFPFromBits(Ty, Words);
+#else
+  return wrap(ConstantFP::get(
+      T->getContext(), APFloat(T->getFltSemantics(),
+                              APInt(BitWidth, ArrayRef<uint64_t>(Words, NumWords)))));
+#endif
+}
+
+unsigned LLVMGoConstFPGetBits(LLVMValueRef Val, uint64_t *Words) {
+  if (!Val)
+    return 0;
+  auto *FP = dyn_cast<ConstantFP>(unwrap(Val));
+  if (!FP)
+    return 0;
+  APInt Bits = FP->getValueAPF().bitcastToAPInt();
+  unsigned NumWords = Bits.getNumWords();
+  if (Words)
+    std::copy_n(Bits.getRawData(), NumWords, Words);
+  return NumWords;
+}
 
 LLVMMetadataRef LLVMConstantAsMetadata(LLVMValueRef C) {
   return wrap(ConstantAsMetadata::get(unwrap<Constant>(C)));
