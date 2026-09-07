@@ -35,6 +35,10 @@ struct LLVMDebugLocMetadata{
 
 LLVMMetadataRef LLVMConstantAsMetadata(LLVMValueRef Val);
 
+LLVMAttributeRef LLVMGoCreateConstantRangeAttribute(
+    LLVMContextRef C, unsigned KindID, unsigned NumBits,
+    const uint64_t *LowerWords, const uint64_t *UpperWords);
+
 LLVMMetadataRef LLVMMDString2(LLVMContextRef C, const char *Str, unsigned SLen);
 LLVMMetadataRef LLVMMDNode2(LLVMContextRef C, LLVMMetadataRef *MDs,
                             unsigned Count);

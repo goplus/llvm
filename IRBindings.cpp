@@ -12,6 +12,7 @@
 
 #include "IRBindings.h"
 #include "llvm/ADT/SmallVector.h"
+#include "llvm/Config/llvm-config.h"
 #include "llvm/IR/Attributes.h"
 #include "llvm/IR/DebugLoc.h"
 #include "llvm/IR/DebugInfoMetadata.h"
@@ -22,6 +23,17 @@
 #include "llvm/IR/Module.h"
 
 using namespace llvm;
+
+LLVMAttributeRef LLVMGoCreateConstantRangeAttribute(
+    LLVMContextRef C, unsigned KindID, unsigned NumBits,
+    const uint64_t *LowerWords, const uint64_t *UpperWords) {
+#if LLVM_VERSION_MAJOR >= 19
+  return LLVMCreateConstantRangeAttribute(C, KindID, NumBits, LowerWords,
+                                          UpperWords);
+#else
+  return nullptr;
+#endif
+}
 
 LLVMMetadataRef LLVMConstantAsMetadata(LLVMValueRef C) {
   return wrap(ConstantAsMetadata::get(unwrap<Constant>(C)));
