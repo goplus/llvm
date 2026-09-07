@@ -927,6 +927,37 @@ func ConstFloatFromString(t Type, str string) (v Value) {
 	return
 }
 
+// ConstFloatFromBits constructs a scalar floating-point constant without rounding
+// through float64. words holds the raw representation, least significant word
+// first, independently of host byte order. Its length must be ceil(bitWidth/64),
+// and unused high bits in the final word must be zero. It panics for an invalid
+// type or representation. For ppc_fp128, the first word is the leading double
+// and the second word is the trailing double, as in LLVM's APFloat representation.
+func ConstFloatFromBits(t Type, words []uint64) (v Value) {
+	var data *C.uint64_t
+	if len(words) != 0 {
+		data = (*C.uint64_t)(unsafe.Pointer(&words[0]))
+	}
+	v.C = C.LLVMGoConstFPFromBits(t.C, data, C.uint(len(words)))
+	if v.IsNil() {
+		panic("llvm: invalid floating-point type or bit representation")
+	}
+	return
+}
+
+// FloatBits returns a copy of a scalar floating-point constant's raw APFloat
+// representation in least-significant-word-first order. Unused high bits in the
+// final word are zero. It panics if v is not a scalar floating-point constant.
+func (v Value) FloatBits() []uint64 {
+	n := C.LLVMGoConstFPGetBits(v.C, nil)
+	if n == 0 {
+		panic("llvm: FloatBits requires a scalar floating-point constant")
+	}
+	words := make([]uint64, int(n))
+	C.LLVMGoConstFPGetBits(v.C, (*C.uint64_t)(unsafe.Pointer(&words[0])))
+	return words
+}
+
 func (v Value) ZExtValue() uint64 { return uint64(C.LLVMConstIntGetZExtValue(v.C)) }
 func (v Value) SExtValue() int64  { return int64(C.LLVMConstIntGetSExtValue(v.C)) }
 func (v Value) DoubleValue() (result float64, inexact bool) {
