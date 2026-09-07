@@ -411,6 +411,27 @@ func (c Context) CreateTypeAttribute(kind uint, t Type) (a Attribute) {
 	return
 }
 
+// CreateConstantRangeAttribute creates a constant-range attribute such as
+// "range". Bounds are unsigned words in least-significant-word-first order;
+// each slice must contain exactly ceil(numBits/64) words and numBits must be
+// positive. Invalid widths or word counts panic. On LLVM before 19, which does
+// not support constant-range attributes, it returns a nil Attribute.
+func (c Context) CreateConstantRangeAttribute(kind uint, numBits int, lowerWords, upperWords []uint64) (a Attribute) {
+	if numBits <= 0 || uint64(numBits) > uint64(^uint32(0)) {
+		panic("llvm: invalid constant range bit width")
+	}
+	nwords := numBits / 64
+	if numBits%64 != 0 {
+		nwords++
+	}
+	if len(lowerWords) != nwords || len(upperWords) != nwords {
+		panic("llvm: constant range bounds have incorrect word counts")
+	}
+	a.C = C.LLVMGoCreateConstantRangeAttribute(c.C, C.unsigned(kind), C.unsigned(numBits),
+		(*C.uint64_t)(unsafe.Pointer(&lowerWords[0])), (*C.uint64_t)(unsafe.Pointer(&upperWords[0])))
+	return
+}
+
 func (a Attribute) GetTypeValue() (t Type) {
 	t.C = C.LLVMGetTypeAttributeValue(a.C)
 	return

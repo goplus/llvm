@@ -58,6 +58,17 @@ unsigned LLVMGoConstFPGetBits(LLVMValueRef Val, uint64_t *Words) {
   return NumWords;
 }
 
+LLVMAttributeRef LLVMGoCreateConstantRangeAttribute(
+    LLVMContextRef C, unsigned KindID, unsigned NumBits,
+    const uint64_t *LowerWords, const uint64_t *UpperWords) {
+#if LLVM_VERSION_MAJOR >= 19
+  return LLVMCreateConstantRangeAttribute(C, KindID, NumBits, LowerWords,
+                                          UpperWords);
+#else
+  return nullptr;
+#endif
+}
+
 LLVMMetadataRef LLVMConstantAsMetadata(LLVMValueRef C) {
   return wrap(ConstantAsMetadata::get(unwrap<Constant>(C)));
 }
